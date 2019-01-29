@@ -13,7 +13,7 @@ public class SolitaireDecrypt
     private CircularlyLinkedList<Integer> keystream = new CircularlyLinkedList<>();
     private CircularlyLinkedList<Integer> convertedToInt = new CircularlyLinkedList<>();
 
-    private String decryptedM = "";
+    private String decryptedM = "test";
     private int indexJokerA;
     private int indexJokerB;
 
@@ -25,16 +25,48 @@ public class SolitaireDecrypt
 
     public String execute(String str)
     {
-        //convertToInt(str);
-
+        intConverter(str);
+        System.out.println(convertedToInt.size());
         while(keystream.size() != convertedToInt.size())
         {
             beforeTCut();
         }
 
-        //someFunc();
-
+        backToLetters();
+        System.out.println(decryptedM);
         return decryptedM;
+    }
+
+    private void backToLetters() {
+        // Convert back to letters (uppercase)
+        decryptedM = "";
+
+
+        int keySize = keystream.size();
+        for (int i = 0; i < keySize; i++) {
+            int converted = 0;
+
+            if (convertedToInt.get(0) <= keystream.get(0))
+            {
+                int temp = convertedToInt.removeFirst() + 26;
+                converted = temp - keystream.removeFirst();
+            }
+
+            else
+            {
+                converted = convertedToInt.removeFirst() - keystream.removeFirst();
+            }
+
+            if (converted > 26)
+            {
+                converted = converted - 26;
+            }
+
+            // convert to uppercase
+            converted += 64;
+            //add to final message
+            decryptedM += (char) converted;
+        }
     }
 
 
@@ -100,7 +132,9 @@ public class SolitaireDecrypt
     private void beforeTCut()
     {
         indexJokerA = deck.indexOf(27);
+
         indexJokerB = deck.indexOf(28);
+
 
         if (deck.get(indexJokerA) == deck.last())
         {
@@ -123,16 +157,27 @@ public class SolitaireDecrypt
 
             deck.insert(nextV, indexJokerA);
             //shift over 1 position
-            indexJokerA++;
+            indexJokerA+= 1;
             deck.insert(jokerV, indexJokerA);
         }
+        //deck.printList();
 
-        //jokers values are 27 and 28 respectively and we can use the indexOf function to find the jokers index
-        // so we can shuffle them
         indexJokerA = deck.indexOf(27);
         indexJokerB = deck.indexOf(28);
 
+
+        test();
+    }
+
+    private void test()
+    {
+        //jokers values are 27 and 28 respectively and we can use the indexOf function to find the jokers index
+        // so we can shuffle them
+
         //start moving second joker
+        //System.out.println(deck.get);
+        //System.out.println(indexJokerB);
+        deck.printList();
         int secondJk = deck.remove(indexJokerB);
 
 
@@ -170,13 +215,85 @@ public class SolitaireDecrypt
 
         indexJokerA = deck.indexOf(27);
         indexJokerB = deck.indexOf(28);
-
+        //deck.printList();
         tripleCut();
     }
 
-
     private void tripleCut()
     {
+        //create the sections to cut
+
+        CircularlyLinkedList<Integer> start = new CircularlyLinkedList<>();
+        CircularlyLinkedList<Integer> end = new CircularlyLinkedList<>();
+
+        int size = deck.size() - 1;
+
+        for (int i = indexJokerA; i < size; i++)
+        {
+            end.addLast(deck.removeLast());
+        }
+
+        for (int i = 0; i < indexJokerB; i++)
+        {
+            start.addFirst(deck.removeFirst());
+        }
+
+        int startSize = start.size();
+
+        for (int i = 0; i < startSize; i++)
+        {
+            deck.addLast(start.removeLast());
+        }
+
+        startSize = end.size();
+
+        for (int i = 0; i < startSize; i++)
+        {
+            deck.addFirst(end.removeFirst());
+        }
+
+        countFromTop();
+    }
+
+    private void countFromTop()
+    {
+        //pop the last card and store it for our checks
+        int lastCard = deck.removeLast();
+        int temp = lastCard;
+        CircularlyLinkedList<Integer> list = new CircularlyLinkedList<>();
+
+        if (lastCard == 28)
+        {
+            temp = 27;
+        }
+
+        for (int i = 0; i < temp; i++)
+        {
+            deck.addLast(deck.removeFirst());
+        }
+
+        deck.addLast(lastCard);
+
+        int topCard = deck.first();
+
+        if (topCard == 28)
+        {
+            topCard = 27;
+        }
+
+        int n = deck.get(topCard);
+
+        if (n != 27 && n != 28)
+        {
+            //System.out.println(n);
+            keystream.addLast(n);
+        }
+        //joker = reset
+        else
+        {
+            beforeTCut();
+        }
+
 
     }
 

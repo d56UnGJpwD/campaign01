@@ -154,28 +154,46 @@ public class SinglyLinkedList<E> implements List<E>
     // removes a node at the specified index
     @Override
     public E remove(int index) {
-        if(index >= size){
+        if(index >= size)
+        {
+            System.out.println("error1 too large index");
             return null;
         }
 
-        if(head == null){
+        if(head == null)
+        {
+            System.out.println("error2");
             return null;
         }
+
         Node<E> temp = head;
-        if(index == 0){
+
+        if(index == 0)
+        {
+            System.out.println("error3");
             head = temp.next;
             temp = null;
             return temp.getValue();
         }
-        if(index < 0){
+
+        if(index < 0)
+        {
+            System.out.println("error4 index < 0");
             return null;
         }
-        for(int i=0; temp!=null && i<index-1; i++){
+
+        for(int i=0; temp!=null && i<index-1; i++)
+        {
             temp = temp.next;
         }
-        if(temp==null || temp.next == null){
+
+        if(temp==null || temp.next == null)
+        {
+            System.out.println("removed");
+
             return null;
         }
+
         Node<E> next = temp.next.next;
         Node<E> del = temp.getNext();
         temp.next = next;
@@ -211,7 +229,7 @@ public class SinglyLinkedList<E> implements List<E>
     public void printList() {
         Node<E> current = head;
         while(current != null){
-            System.out.println(current.getValue());
+            //System.out.println(current.getValue());
             current = current.next;
         }
     }
@@ -221,7 +239,7 @@ public class SinglyLinkedList<E> implements List<E>
         {
             Node<E> current = head;
             int i = 0;
-            while(current != null)
+            while(i < size)
             {
                 if(current.getValue() == item)
                 {
@@ -230,9 +248,9 @@ public class SinglyLinkedList<E> implements List<E>
                 current = current.next;
                 i++;
             }
-            return -1;
+            //System.out.println(i);
         }
-        return-1;
+        return -1;
 
     }
 }
