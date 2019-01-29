@@ -33,7 +33,7 @@ public class SinglyLinkedList<E> implements List<E>
     }
     public Node<E> head = null;
     public Node<E> tail = null;
-    private int size = 0;
+    public int size = 0;
 
     public SinglyLinkedList(){}
 

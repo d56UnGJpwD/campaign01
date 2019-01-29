@@ -1,4 +1,4 @@
-package edu.isu.cs.cs3308;
+package edu.isu.cs.cs3308.structures;
 
 public class SolitaireEncrypt
 {

@@ -2,70 +2,63 @@ package edu.isu.cs.cs3308.structures.impl;
 
 import edu.isu.cs.cs3308.structures.List;
 
-public class CircularlyLinkedList<E> implements List<E>
+public class CircularlyLinkedList<E> extends SinglyLinkedList<E>
 {
-    public E first()
+    public E removeFirst()
     {
-        return null;
-    }
+        if(isEmpty())
+        {
+            return null;
+        }
 
-    public E last()
-    {
-        return null;
-    }
+        tail.setNext(head.getNext());
+        E delValue = head.getValue();
+        head = head.getNext();
 
-    public void addLast(E element)
-    {
-
-    }
-
-    public void addFirst(E element)
-    {
-
+        size--;
+        return delValue;
     }
 
     public E removeLast()
     {
-        return null;
+        if(isEmpty())
+        {
+            return null;
+        }
+        E delValue = tail.getValue();
+        tail = head;
+
+        for(int i = 1; i < size - 1; i++)
+        {
+            //tail how we keep track of our position
+            tail = tail.getNext();
+        }
+        //the node after tail is the head
+        tail.setNext(head);
+        size--;
+        return delValue;
     }
 
-    public E removeFirst()
+    public void addLast(E element)
     {
-        return null;
-    }
+        if(element != null)
+        {
+            Node<E> nodeToAdd = new Node<E>(element, head);
+            if(isEmpty() == false)
+            {
+                //if empty add to the end
+                tail.setNext(nodeToAdd);
+            }
+            else
+            {
+                //if it is empty make the head point to itself to retain the loop
+                head = nodeToAdd;
+                nodeToAdd.setNext(head);
+            }
+            //set tail to new node
+            tail = nodeToAdd;
+            size++;
+        }
 
-    public void insert(E element, int index)
-    {
-
-    }
-
-    public E remove(int index)
-    {
-        return null;
-    }
-
-    public E get(int index)
-    {
-        return null;
-    }
-
-    public int size()
-    {
-        return 0;
-    }
-
-    public boolean isEmpty()
-    {
-        return false;
-    }
-
-    public void printList()
-    {
-
-    }
-
-    public int indexOf(E item)
-    {
-        return 0;
     }
 }
